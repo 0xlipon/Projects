@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subdomain Takeover POC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #00ff00;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 255, 0, 0.5);
+            z-index: 1;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            color: #00ff00;
+            text-shadow: 0 0 20px #00ff00;
+            animation: glow 1.5s infinite alternate;
+        }
+        p {
+            font-size: 1.3rem;
+            color: #b0ffb0;
+            margin: 1.5rem 0;
+        }
+        .alert {
+            background-color: #333;
+            border-left: 5px solid #ff5722;
+            padding: 1rem;
+            border-radius: 6px;
+            color: #ff5722;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 10px #ff5722;
+        }
+        a {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.7rem 1.5rem;
+            color: #fff;
+            background-color: #00ff00;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 2px solid #00ff00;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            font-weight: bold;
+        }
+        a:hover {
+            background-color: #004d00;
+            color: #00ff00;
+            border-color: #004d00;
+        }
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .web-spider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.1) 20%, transparent 50%);
+            background-size: 100px 100px;
+            animation: webSpider 15s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes webSpider {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+            z-index: 2;
+            max-width: 80%;
+            width: 300px;
+            text-align: center;
+        }
+        .modal h2 {
+            margin-top: 0;
+            color: #ff5722;
+        }
+        .modal p {
+            margin: 1rem 0;
+        }
+        .modal button {
+            background-color: #00ff00;
+            color: #000;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal button:hover {
+            background-color: #004d00;
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="web-spider"></div>
+    </div>
+    <div class="container">
+        <h1>Subdomain Takeover POC</h1>
+        <p>This subdomain is vulnerable to takeover.</p>
+        <div class="alert">
+            <strong>Warning:</strong> This subdomain is now under the control of an external entity.
+        </div>
+        <p>For more information, please contact the security team.</p>
+        <a href="mailto:0xlipon@gmail.com">Contact Security</a>
+    </div>
+
+    <!-- Modal -->
+    <div id="sourceAlert" class="modal">
+        <h2>Access Denied</h2>
+        <p>Viewing source code is restricted. If you're an admin or developer, please contact the site administrator.</p>
+        <button onclick="closeModal()">OK</button>
+    </div>
+
+    <script>
+        const modal = document.getElementById('sourceAlert');
+
+        function showModal() {
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Prevent viewing source and inspect element
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            showModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'U' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                showModal();
+            }
+        });
+    </script>
+</body>
+</html>
